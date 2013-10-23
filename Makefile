@@ -4,6 +4,6 @@
 
 
 # Special cases
-013:
+013 015:
 	g++ -o builds/euler$@ -lgmpxx -lgmp -g -Wall -std=c++0x euler$@.cpp
 	./builds/euler$@
