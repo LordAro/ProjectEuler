@@ -2,14 +2,7 @@
 #include <iostream>
 #include <string>
 
-bool IsPrime(long num)
-{
-	if (num != 2 && num % 2 == 0) return false;
-	for (int i = 3; i * i <= num; i += 2) {
-		if (num % i == 0) return false;
-	}
-	return true;
-}
+#include "prime.hpp"
 
 bool IsPandigital(std::string s)
 {
