@@ -87,8 +87,9 @@ std::vector<std::vector<int>> nums = {
 {5304,5499,564,2801,679,2653,1783,3608,7359,7797,3284,796,3222,437,7185,6135,8571,2778,7488,5746,678,6140,861,7750,803,9859,9918,2425,3734,2698,9005,4864,9818,6743,2475,132,9486,3825,5472,919,292,4411,7213,7699,6435,9019,6769,1388,802,2124,1345,8493,9487,8558,7061,8777,8833,2427,2238,5409,4957,8503,3171,7622,5779,6145,2417,5873,5563,5693,9574,9491,1937,7384,4563,6842,5432,2751,3406,7981}
 };
 
+
 /* Find minimum distance value from vertices not yet checked */
-int minDistance(std::vector<int> dist, std::vector<bool> sptSet)
+int minDistance(const std::vector<int> &dist, const std::vector<bool> &sptSet)
 {
 	int min = INT_MAX;
 	int min_index = -1;
@@ -103,8 +104,9 @@ int minDistance(std::vector<int> dist, std::vector<bool> sptSet)
 	return min_index;
 }
 
-/* Dijkstra's algorithm from an adjacency matrix */
-void dijkstra(std::vector<std::vector<int>> graph, int src)
+/* Modified Dijkstra's algorithm from an adjacency matrix, for finding the
+ * minimum path from a point on the graph, to an end of a row of the actual matrix. */
+int dijkstra(const std::vector<std::vector<int>> &graph, int src)
 {
 	/* The output array.  dist[i] will hold the shortest distance from src to i */
 	std::vector<int> dist(graph.size(), INT_MAX);
@@ -125,18 +127,23 @@ void dijkstra(std::vector<std::vector<int>> graph, int src)
 
 		/* Update dist value of the adjacent vertices of the picked vertex. */
 		for (uint v = 0; v < graph.size(); v++) {
+
 			/* Update dist[v] only if is not in sptSet, there is an edge from
 			 * u to v, and total weight of path from src to v through u is
 			 * smaller than current value of dist[v] */
 			if (!sptSet[v] && graph[u][v] && dist[u] != INT_MAX
-			    && dist[u]+graph[u][v] < dist[v]) {
+			    && dist[u] + graph[u][v] < dist[v]) {
 				dist[v] = dist[u] + graph[u][v];
 			}
 		}
 	}
 
-	std::cout << "Minimal path sum from top-left to bottom-right: ";
-	std::cout << dist[dist.size() - 1] + nums[nums.size() - 1][nums.size() - 1] << std::endl;
+	int mindist = INT_MAX;
+	for (uint i = 0; i < dist.size(); i++) {
+		if (i % nums.size() != nums.size() - 1) continue;
+		mindist = std::min(mindist, dist[i] + nums[i / nums.size()][i % nums.size()]);
+	}
+	return mindist;
 }
 
 int main()
@@ -149,9 +156,6 @@ int main()
 			if (j % nums.size() != nums.size() - 1) {
 				graph[nums.size() * i + j][nums.size() * i + j + 1] = nums[i][j];
 			}
-			if (j % nums.size() != 0) {
-				graph[nums.size() * i + j][nums.size() * i + j - 1] = nums[i][j];
-			}
 			if (i % nums.size() != nums.size() - 1) {
 				graph[nums.size() * i + j][nums.size() * i + j + nums.size()] = nums[i][j];
 			}
@@ -161,6 +165,10 @@ int main()
 		}
 	}
 
-	dijkstra(graph, 0);
-	return 0;
+	int mindist = INT_MAX;
+	for (uint i = 0; i < nums.size(); i++) {
+		mindist = std::min(mindist, dijkstra(graph, i * nums.size()));
+		std::cout << "Row " << i << " : " << mindist << std::endl;
+	}
+	std::cout << "Minimal path sum from left to right: " << mindist << std::endl;
 }
