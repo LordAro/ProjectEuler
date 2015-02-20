@@ -9,5 +9,5 @@
 	./builds/euler$@
 
 004b:
-	g++ -o builds/euler$@ -Ofast -std=c++0x euler$@.cpp
+	clang++ -o builds/euler$@ -Ofast -std=c++0x euler$@.cpp
 	./builds/euler$@
