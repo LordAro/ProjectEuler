@@ -4,8 +4,8 @@
 
 
 # Special cases
-013 015 016 020 025 029 048:
-	g++ -o builds/euler$@ -lgmpxx -lgmp -g -Wall -std=c++0x euler$@.cpp
+013 015 016 020 025 029 048 053:
+	g++ -o builds/euler$@ -g -Wall -std=c++0x euler$@.cpp -lgmpxx -lgmp
 	./builds/euler$@
 
 004b:
