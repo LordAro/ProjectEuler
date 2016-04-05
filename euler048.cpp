@@ -2,7 +2,6 @@
 #include <gmp.h>
 #include <gmpxx.h>
 
-
 int main()
 {
 	mpz_class sum = 0;

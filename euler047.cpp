@@ -2,8 +2,6 @@
 #include <iostream>
 #include <vector>
 
-//#include "prime.h"
-
 int GetSmallestFactor(int num)
 {
 	if (num % 2 == 0) return 2;
