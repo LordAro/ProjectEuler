@@ -18,7 +18,7 @@ int main()
 	uint64_t largeprod = 0;
 	for (size_t i = 0; i < s.length() - (NUM_DIGITS - 1); i++) {
 		uint64_t prod = 1;
-		for (size_t j = i; j < NUM_DIGITS; j++) {
+		for (size_t j = i; j < i + NUM_DIGITS; j++) {
 			prod *= c2i(s[j]);
 		}
 
