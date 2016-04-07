@@ -12,6 +12,6 @@ CXX_FLAGS=-g -Wall -Wextra -pedantic -std=c++14
 	${CXX} -o builds/euler$@ ${CXX_FLAGS} euler$@.cpp -lgmpxx -lgmp
 	./builds/euler$@
 
-004b:
+004b 008b:
 	g++ -o builds/euler$@ -Ofast -std=c++14 euler$@.cpp
 	./builds/euler$@
