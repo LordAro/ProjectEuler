@@ -11,7 +11,7 @@ int main()
 	std::string tmp;
 	while (num_file >> tmp) s += tmp;
 
-	const uint64_t NUM_ITERATE = 1000000;
+	const uint64_t NUM_ITERATE = 100000;
 	double timecount = 0;
 	for (uint64_t count = 0; count < NUM_ITERATE; count++) {
 		/* Timer Start */
