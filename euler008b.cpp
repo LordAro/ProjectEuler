@@ -1,8 +1,22 @@
 #include <iostream>
 #include <fstream>
-#include <chrono>
 
-static const size_t NUM_DIGITS = 13;
+#include "benchmark.hpp"
+
+int digit_product(const std::string &s, int digits)
+{
+	uint64_t largeprod = 0;
+	for (size_t i = 0; i < s.length() - (digits - 1); i++) {
+		uint64_t prod = 1;
+		for (size_t j = i; j < i + digits; j++) {
+			prod *= s[j] - '0';
+		}
+
+		largeprod = std::max(largeprod, prod);
+	}
+	std::cout << "Largest product of " << digits << " digits: " << largeprod << std::endl;
+	return largeprod;
+}
 
 int main()
 {
@@ -11,29 +25,5 @@ int main()
 	std::string tmp;
 	while (num_file >> tmp) s += tmp;
 
-	const uint64_t NUM_ITERATE = 100000;
-	double timecount = 0;
-	for (uint64_t count = 0; count < NUM_ITERATE; count++) {
-		/* Timer Start */
-		auto t1 = std::chrono::high_resolution_clock::now();
-
-		uint64_t largeprod = 0;
-		for (size_t i = 0; i < s.length() - (NUM_DIGITS - 1); i++) {
-			uint64_t prod = 1;
-			for (size_t j = i; j < i + NUM_DIGITS; j++) {
-				prod *= s[j] - '0';
-			}
-
-			largeprod = std::max(largeprod, prod);
-		}
-
-		/* Timer End */
-		auto t2 = std::chrono::high_resolution_clock::now();
-
-		std::cout << "Largest product of " << NUM_DIGITS << " digits: " << largeprod << std::endl;
-
-		auto time_span = std::chrono::duration_cast<std::chrono::duration<double, std::milli>>(t2 - t1);
-		timecount += time_span.count();
-	}
-	std::cout << "Average time taken: " << timecount / NUM_ITERATE << "ms" << std::endl;
+	return benchmark(100000, digit_product, s, 13) ? 0 : 1;
 }
