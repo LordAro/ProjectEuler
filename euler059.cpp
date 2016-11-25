@@ -1,6 +1,7 @@
+#include <algorithm>
 #include <iostream>
 #include <fstream>
-#include <algorithm>
+#include <numeric>
 
 std::string xor_str(std::string str, const std::string &key)
 {
