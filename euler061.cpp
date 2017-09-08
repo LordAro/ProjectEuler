@@ -33,9 +33,37 @@ int octagonal(int n)
 	return n * (3 * n - 2);
 }
 
-bool form_cycle(int a, int b)
+bool is_compatible(int a, int b)
 {
 	return a % 100 == b / 100;
+}
+
+std::vector<std::pair<int, int>> find_compatibles(int num, std::vector<std::vector<int>> lists)
+{
+	std::vector<std::pair<int, int>> out;
+	int idx = 0;
+	for (const auto &l : lists) {
+		for (const auto &n : l) {
+			if (n % 100 < 10) continue;
+			if (is_compatible(num, n)) out.push_back({idx, n});
+		}
+		idx++;
+	}
+	return out;
+}
+
+std::vector<int> get_cycle(std::vector<int> found, const std::vector<std::vector<int>> &lists)
+{
+	auto compats = find_compatibles(found.back(), lists);
+	for (const auto &p : compats) {
+		std::vector<int> new_found = found;
+		new_found.push_back(p.second);
+		std::vector<std::vector<int>> new_lists = lists;
+		new_lists.erase(new_lists.begin() + p.first);
+		auto result = get_cycle(new_found, new_lists);
+		if (result.size() == 6 && is_compatible(result.back(), result.front())) return result;
+	}
+	return found;
 }
 
 int main()
@@ -62,42 +90,14 @@ int main()
 		if (tri > 10000 && squ > 10000 && pen > 10000 && hex > 10000 && hep > 10000 && oct > 10000) break;
 	}
 
-	std::vector<int> group(6);
-	for (auto i : triangles) {
-		if (i % 100 < 10) continue;
-		if (i % 100 == i / 100) continue;
-		for (auto j : squares) {
-			if (j % 100 < 10) continue;
-			if (j % 100 == j / 100) continue;
-			if (form_cycle(j, i) && form_cycle(i, j)) continue;
-			for (auto k : pentagons) {
-				if (k % 100 < 10) continue;
-				if (k % 100 == k / 100) continue;
-				if ((form_cycle(i, k) && form_cycle(k, i)) || (form_cycle(j, k) && form_cycle(k, j))) continue;
-				for (auto l : hexagons) {
-					if (l % 100 < 10) continue;
-					if (l % 100 == l / 100) continue;
-					if ((form_cycle(i, l) && form_cycle(l, i)) || (form_cycle(j, l) && form_cycle(l, j)) || (form_cycle(k, l) && form_cycle(l, k))) continue;
-					for (auto m : heptagons) {
-						if (m % 100 < 10) continue;
-						if (m % 100 == m / 100) continue;
-						if ((form_cycle(i, m) && form_cycle(m, i)) || (form_cycle(j, m) && form_cycle(m, j)) || (form_cycle(k, m) && form_cycle(m, k)) || (form_cycle(l, m) && form_cycle(m, l))) continue;
-						for (auto n : octagons) {
-							if (n % 100 < 10) continue;
-							if (n % 100 == n / 100) continue;
-							if ((form_cycle(i, n) && form_cycle(n, i)) || (form_cycle(j, n) && form_cycle(n, j)) || (form_cycle(k, n) && form_cycle(n, k)) || (form_cycle(l, n) && form_cycle(n, l)) || (form_cycle(n, m) && form_cycle(m, n))) continue;
-							std::vector<int> group = {i, j, k, l, m, n};
-							std::vector<int> group_u = {i / 100, j / 100, k / 100, l / 100, m / 100, n / 100};
-							std::vector<int> group_l = {i % 100, j % 100, k % 100, l % 100, m % 100, n % 100};
-							if (std::is_permutation(group_u.begin(), group_u.end(), group_l.begin(), group_l.end())) {
-									for (const auto &a : group) std::cout << a << ' ';
-									std::cout << "Sum: " << std::accumulate(group.begin(), group.end(), 0) << '\n';
-									return 0; // Only solution
-							}
-						}
-					}
-				}
-			}
+	for (const auto &n : triangles) {
+		std::vector<int> result = get_cycle({n}, {squares, pentagons, hexagons, heptagons, octagons});
+		if (result.size() == 6) {
+			for (const auto &i : result) std::cout << i << ' ';
+			std::cout << ": " << std::accumulate(result.begin(), result.end(), 0) << '\n';
+			return 0;
 		}
 	}
+	return 1;
 }
+
