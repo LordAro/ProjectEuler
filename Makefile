@@ -1,6 +1,11 @@
 CXX=clang++
 CXX_FLAGS=-g -Wall -Wextra -pedantic -std=c++14
 
+ALL_SLNS=$(wildcard euler???.cpp)
+
+all:
+	@$(MAKE) $(ALL_SLNS:euler%.cpp=%)
+
 %:
 	${CXX} -o builds/euler$@ ${CXX_FLAGS} euler$@.cpp
 	./builds/euler$@
