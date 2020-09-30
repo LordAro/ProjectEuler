@@ -38,8 +38,9 @@ int main()
 			if (nums[i - *abun]) sumfound = true;
 		}
 		if (!sumfound) {
-			std::cout << i << " - no sum found!" << std::endl;
+			//std::cout << i << " - no sum found!" << std::endl;
 			total += i;
+		}
 	}
 	std::cout << "Sum of non-abundant numbers: " << total << std::endl;
 }

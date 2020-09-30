@@ -40,10 +40,10 @@ long largest_palindromic_number()
 	}
 	std::cout << "Largest palindromic number: " << ans << '\n';
 	std::cout << "Numbers: " << bigi << ", " << bigj << ", " << bigk << ", " << bigl << '\n';
+	return 0;
 }
 
 int main()
 {
 	return benchmark(10000, largest_palindromic_number) ? 0 : 1;
-
 }

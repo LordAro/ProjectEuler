@@ -15,7 +15,7 @@ int main()
 			if (trinum % j == 0) numfactors += 2;
 		}
 
-		if (numfactors > 100) std::cout << trinum << ":" << numfactors << std::endl;
+		//if (numfactors > 100) std::cout << trinum << ":" << numfactors << std::endl;
 		if (numfactors > 500) {
 			std::cout << "The triangle number: " << trinum
 			          << " has " << numfactors << " factors" << std::endl;
