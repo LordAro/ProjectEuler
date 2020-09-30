@@ -1,36 +1,14 @@
 #include <iostream>
-
-bool ContainsDigit(int digit, long num)
-{
-	/* Handle leading zeros */
-	if (num < 1000000000 && digit == 0) return true;
-	while (num != 0) {
-	    int cur_digit = num % 10;
-		num /= 10;
-		if (cur_digit == digit) return true;
-	}
-	return false;
-}
+#include <algorithm>
+#include <vector>
 
 int main()
 {
-	long num = -1;
-	int count = 362880 * 2;
-	/* Only need to search between 2*10^9 and 3*10^9
-	 * Explanation: Each 10^9 'block' always contains 9! permutations each.	*/
-	for (long i = 2000000000; i <= 3000000000; i++) {
-		bool valid = true;
-		for (int j = 0; j <= 9; j++) {
-			valid = valid && ContainsDigit(j, i);
-		}
-		if (valid) {
-			count++;
-			std::cout << i << " is valid permutation (" << count << ")" << std::endl;
-			if (count == 1000000) {
-				num = i;
-				break;
-			}
-		}
+	std::vector<int> digits = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+	for (int count = 1; count < 1000000; count++) {
+		std::next_permutation(digits.begin(), digits.end());
 	}
-	std::cout << "Millionth lexiographic permutation: " << num << std::endl;
+	std::cout << "Millionth lexicographic permutation: ";
+	for (const auto &d : digits) std::cout << d;
+	std::cout << '\n';
 }
