@@ -1,5 +1,5 @@
 CXX=clang++
-CXX_FLAGS=-g -Wall -Wextra -pedantic -std=c++14
+CXX_FLAGS=-ggdb3 -Wall -Wextra -pedantic -std=c++17
 
 ALL_SLNS=$(wildcard euler???.cpp)
 
